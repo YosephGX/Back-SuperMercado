@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  demosupermercado: #nombre de la app establecido en application.properties
+    build: DemoSupermercado #nombre de la carpeta donde está el DockerFile
+    mem_limit: 512m #límite de memoria para el contenedor
+    ports:
+      - "8080:8080"
+    environment: #variables de entorno necesarias
+      DB_URL: jdbc:mysql://demosupermercado_server:3306/demosupermercado_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USER: root
+      DB_PASS: 123456
+    restart: always #si el contenedor falla, se reinicia automáticamente
+    depends_on:
+      demosupermercado_server:
+          condition: service_healthy
+  demosupermercado_server: #nombre del servidor de base de datos
+    image: mysql:8.0.33 #misma versión que esté en el pom
+    ports:
+      - "3307:3306"
+    environment: #configuraciones de base de datos dockerizada
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: demosupermercado_db #nombre de la base de datos
+    restart: always #si el contenedor falla, se reinicia automáticamente
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10

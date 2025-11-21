@@ -1,0 +1,3 @@
+[submodule "DemoSupermercado"]
+	path = DemoSupermercado
+	url = https://github.com/YosephGX/DemoSupermercado.git
