@@ -10,14 +10,15 @@ services:
       DB_URL: jdbc:mysql://demosupermercado_server:3306/demosupermercado_db?createDatabaseIfNotExist=true&serverTimezone=UTC
       DB_USER: root
       DB_PASS: 123456
+      API_KEY: DemoSuperMercado-21/11/2025
     restart: always #si el contenedor falla, se reinicia automáticamente
     depends_on:
       demosupermercado_server:
           condition: service_healthy
   demosupermercado_server: #nombre del servidor de base de datos
     image: mysql:8.0.33 #misma versión que esté en el pom
-    ports:
-      - "3307:3306"
+    #ports:
+    #  - "3307:3306"
     environment: #configuraciones de base de datos dockerizada
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_PASSWORD: 123456
